@@ -1,0 +1,6 @@
+elasticsearch
+pandas
+streamlit
+networkx
+plotly
+docker
