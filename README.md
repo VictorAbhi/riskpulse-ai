@@ -4,8 +4,52 @@ Turns raw logs into a single 0–100 threat score + real-time attack-path visual
 
 Not a SIEM. A lightweight risk intelligence layer on top of any log source.
 
-![demo](assets/demo.gif)
+### System Architecture (purposed)
+# RiskPulse AI – System Architecture
 
+```mermaid
+flowchart TD
+    subgraph A ["Log Sources (SME Environment)"]
+        A1[Windows Workstations<br/>Winlogbeat]
+        A2[Linux/Ubuntu Servers<br/>Filebeat]
+        A3[Wazuh/OSSEC Agents<br/>(optional)]
+        A4[CloudTrail / SaaS Logs]
+    end
+
+    subgraph B ["Ingestion"]
+        B1[Beats → JSON over network]
+    end
+
+    subgraph C ["Docker Host ($5 VPS or Laptop)"]
+        D[("OpenSearch<br/>Single Node<br/>~1.5 GB RAM")]
+        E[RiskPulse AI Engine<br/>Python 3.10]
+    end
+
+    subgraph E
+        E1[ML Classifier<br/>TabNet + LightGBM<br/>→ normal/suspicious/malicious]
+        E2[Dynamic Threat Scoring<br/>0–100 Gauge]
+        E3[Probabilistic FSM<br/>Recon → Lateral → Exfil]
+        E4[SHAP Explainer<br/>"Why this score?"]
+    end
+
+    subgraph F ["Frontend"]
+        G[Streamlit Dashboard<br/>Live @ localhost:8501]
+        G1[Threat Score Gauge]
+        G2[Live Sankey Attack Path]
+        G3[Top Risky Assets]
+        G4[SHAP Force Plots]
+    end
+
+    A --> B1
+    B1 --> D
+    D <--> E1 & E2 & E3 & E4
+    E1 & E2 & E3 --> G
+
+    style C fill:#f0f8ff,stroke:#333,stroke-width:2px
+    style G fill:#ffe6e6,stroke:#e60000,stroke-width:4px,rx:15,ry:15
+    style E fill:#fff8e6,stroke:#cc9900
+    style D fill:#e6f7ff,stroke:#0066cc
+```
 ### Core Features (MVP)
 - ML classification (TabNet + SHAP) → normal / suspicious / malicious
 - Dynamic Threat Score 0–100 (explainable, auto-weighted)

@@ -1,6 +1,22 @@
-elasticsearch
-pandas
-streamlit
-networkx
-plotly
-docker
+# Core
+streamlit>=1.38.0
+pandas>=2.2.0
+numpy>=1.26.0
+
+# OpenSearch / Elasticsearch client
+opensearch-py>=2.6.0
+
+# ML & Explainability
+pytorch-tabnet>=4.1.0
+lightgbm>=4.4.0
+scikit-learn>=1.5.0
+shap>=0.44.0
+
+# Visualization
+plotly>=5.22.0
+networkx>=3.3.3
+kaleido>=0.2.1  # for static Plotly images
+
+# Utilities
+python-dotenv>=1.0.1
+tqdm>=4.66.0

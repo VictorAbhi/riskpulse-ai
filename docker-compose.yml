@@ -1,0 +1,15 @@
+services:
+  opensearch:
+    image: opensearchproject/opensearch:latest  # Use the latest OpenSearch image
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node  # Run OpenSearch in single-node mode
+      - DISABLE_SECURITY_PLUGIN=true # Another way to disable security plugin
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"  # Set Java heap size
+    ports:
+      - "9201:9200" # Expose OpenSearch REST API
+      - "9600:9600" # Expose OpenSearch performance analyzer
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data  # Persist data
+volumes:
+  opensearch-data:
