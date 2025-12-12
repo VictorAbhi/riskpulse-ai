@@ -10,10 +10,10 @@ Not a SIEM. A lightweight risk intelligence layer on top of any log source.
 ```mermaid
 flowchart TD
     subgraph A ["Log Sources (SME Environment)"]
-        A1[Windows Workstations<br/>Winlogbeat]
-        A2[Linux/Ubuntu Servers<br/>Filebeat]
-        A3[Wazuh/OSSEC Agents<br/>(optional)]
-        A4[CloudTrail / SaaS Logs]
+        A1[Windows Workstations\Winlogbeat]
+        A2[Linux_Ubuntu_Servers\Filebeat]
+        A3[Wazuh_OSSEC_Agents]
+        A4[CloudTrail_SaaS_Logs]
     end
 
     subgraph B ["Ingestion"]
@@ -21,19 +21,19 @@ flowchart TD
     end
 
     subgraph C ["Docker Host ($5 VPS or Laptop)"]
-        D[("OpenSearch<br/>Single Node<br/>~1.5 GB RAM")]
-        E[RiskPulse AI Engine<br/>Python 3.10]
+        D[("OpenSearch Single Node")]
+        E[RiskPulse AI Engine]
     end
 
     subgraph E
-        E1[ML Classifier<br/>TabNet + LightGBM<br/>→ normal/suspicious/malicious]
-        E2[Dynamic Threat Scoring<br/>0–100 Gauge]
-        E3[Probabilistic FSM<br/>Recon → Lateral → Exfil]
-        E4[SHAP Explainer<br/>"Why this score?"]
+        E1[ML Classifier: TabNet + LightGBM\n→ normal/suspicious/malicious]
+        E2[Dynamic Threat Scoring\n0–100 Gauge]
+        E3[Probabilistic FSM: Recon → Lateral → Exfil]
+        E4[SHAP Explainer: Why this score ?']
     end
 
     subgraph F ["Frontend"]
-        G[Streamlit Dashboard<br/>Live @ localhost:8501]
+        G[Streamlit Dashboard]
         G1[Threat Score Gauge]
         G2[Live Sankey Attack Path]
         G3[Top Risky Assets]
