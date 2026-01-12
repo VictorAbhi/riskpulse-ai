@@ -24,7 +24,7 @@ if not client.indices.exists(index=INDEX_NAME):
 
 # ── 2. Choose & read your dataset ───────────────────────────────────────
 
-file_path = "data\\raw\\empire_dcsync_dcerpc_drsuapi_DsGetNCChanges_2020-09-21185829.json"  # example from splunk/attack_data
+file_path = "data\\raw\\msf_record_mic_2020-06-09225055.json"  # example from splunk/attack_data
 
 def read_events(file_path: str):
     path = Path(file_path)

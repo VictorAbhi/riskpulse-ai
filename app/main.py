@@ -19,7 +19,7 @@ INDEX_NAME = 'riskpulse-logs'          # ← change if your index has different 
 def get_opensearch_client():
     return OpenSearch(
         hosts=[{'host': OPENSEARCH_HOST, 'port': OPENSEARCH_PORT}],
-        http_auth=None,                # ← add ('admin', 'admin') if you use default dev creds
+        http_auth=None,               
         use_ssl=False,
         verify_certs=False,
         ssl_assert_hostname=False,
