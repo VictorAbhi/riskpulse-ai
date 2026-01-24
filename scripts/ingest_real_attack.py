@@ -17,14 +17,28 @@ if not client.indices.exists(index=INDEX_NAME):
     client.indices.create(
         index=INDEX_NAME,
         body={
-            "settings": {"number_of_shards": 1, "number_of_replicas": 1}
+            "settings": {"number_of_shards": 1, "number_of_replicas": 1},
+            "mappings": {
+                "dynamic": True,  # Allow dynamic field creation
+                "properties": {
+                    "Keywords": {"type": "keyword"},
+                    "ProcessId": {"type": "keyword"},
+                    "EventRecordID": {"type": "keyword"},
+                    "TimeCreated_attrs": {
+                        "type": "object",
+                        "dynamic": True
+                    }
+                }
             }
+        }
     )
     print(f"Created index: {INDEX_NAME}")
+else:
+    print(f"Index {INDEX_NAME} already exists, appending data...")
 
 # ── 2. Choose & read your dataset ───────────────────────────────────────
 
-file_path = "data\\raw\\msf_record_mic_2020-06-09225055.json"  # example from splunk/attack_data
+file_path = "data\\raw\\empire_dcsync_dcerpc_drsuapi_DsGetNCChanges_2020-09-21185829.json"  # example from splunk/attack_data
 
 def read_events(file_path: str):
     path = Path(file_path)
@@ -34,18 +48,27 @@ def read_events(file_path: str):
             for line in f:
                 line = line.strip()
                 if line:
-                    yield json.loads(line)
+                    event = json.loads(line)
+                    yield clean_event(event)
     else:
         with open(path, 'r', encoding='utf-8') as f:
             data = json.load(f)
             if isinstance(data, list):
-                yield from data
+                for event in data:
+                    yield clean_event(event)
             else:
                 # Assume NDJSON / json lines
                 for line in f:
                     line = line.strip()
                     if line:
-                        yield json.loads(line)
+                        event = json.loads(line)
+                        yield clean_event(event)
+
+def clean_event(event):
+    """Clean up event data - keep as flexible as possible"""
+    # Keep most fields as-is but ensure no extremely large objects
+    # Keywords stays as-is (can be hex string or number)
+    return event
 
 # ── 3. Bulk ingest ──────────────────────────────────────────────────────
 
@@ -72,6 +95,8 @@ for ok, item in helpers.parallel_bulk(
         success += 1
     else:
         failed += 1
+        if failed <= 5:  # Print first 5 errors for debugging
+            print(f"Error: {item}")
 
 print(f"Successfully indexed {success:,} documents")
 print(f"Failed documents: {failed:,}")
