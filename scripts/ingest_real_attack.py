@@ -42,7 +42,7 @@ print(f"Created index: {INDEX_NAME} with proper mappings")
 
 # ── 2. Choose & read your dataset ───────────────────────────────────────
 
-file_path = "data/raw/master_all_datasets.jsonl"  # example from splunk/attack_data
+file_path = "data\\raw\\apt29_evals_day1_manual_2020-05-01225525.json"  # example from splunk/attack_data
 
 def clean_event(event):
     """Remove empty string values and keep only valid data"""
@@ -147,7 +147,7 @@ if first_5_errors:
 if error_log:
     from collections import Counter
     error_counts = Counter(error_log)
-    print("\n📊 Top error reasons:")
+    print("\nTop error reasons:")
     for error, count in error_counts.most_common(5):
         print(f"  [{count:,}x] {error[:150]}")
 
