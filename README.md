@@ -1,29 +1,22 @@
 # RiskPulse AI
-**AI-Driven Cyber Risk Scoring Engine for SMEs**  
+**AI-Driven Cyber Risk Scoring Engine**  
 Turns raw logs into a single 0–100 threat score + real-time attack-path visualization.
-
-Not a SIEM. A lightweight risk intelligence layer on top of any log source.
-
-### System Architecture (purposed)
-# RiskPulse AI – System Architecture
+Anomaly Detection using isolation forest [AP29 dataset] (https://github.com/OTRF/detection-hackathon-apt29/tree/master/datasets/day1) dataset
 
 
 ### Core Features (MVP)
 - ML classification (TabNet + SHAP) → normal / suspicious / malicious
 - Dynamic Threat Score 0–100 (explainable, auto-weighted)
-- Probabilistic FSM attack-path modeling (Recon → Exfil)
-- Live Sankey attack flow diagram
+- Anomaly detection
+- ....more will be updated
 - Streamlit dashboard (gauge + Sankey + top risky assets)
 - Runs on $5–10/month VPS or Raspberry Pi
 
-### Built For
-Small and medium businesses (5–250 employees) that cannot afford or manage Wazuh/Kibana.
 
 ### Tech Stack
-- Log ingestion: Filebeat / Winlogbeat
 - Storage: OpenSearch (single-node)
 - ML: TabNet or LightGBM
-- Scoring & FSM: Python + NetworkX
+- Scoring & FSM: Python
 - Dashboard: Streamlit + Plotly
 
 ### Quick Start
